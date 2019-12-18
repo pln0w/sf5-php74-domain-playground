@@ -1,0 +1,9 @@
+services:
+
+    command_bus:
+        class: Shared\Infrastructure\CommandBus
+        arguments: []
+        calls:
+            - ['map', ['User\Application\Command\CreateUserCommand', '@User\Application\Command\CreateUserHandler']]
+
+    User\Application\Command\CreateUserHandler: ~

@@ -1,0 +1,7 @@
+api_login_check:
+    path: /api/login_check
+
+register_user:
+    path: /user
+    methods: POST
+    controller: User\Infrastructure\Controller\RegisterUserAction

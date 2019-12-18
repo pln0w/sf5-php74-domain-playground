@@ -1,0 +1,41 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Shared\:
+        resource: '../src/Shared/*'
+        exclude: '../src/Shared/{SymfonyKernel.php}'
+
+    User\:
+        resource: '../src/User/*'
+
+    Pawly\RestApiValidator\Resolver\CustomRequestResolver:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: controller.request_value_resolver }
+
+    User\Application\EventListener\PasswordUpdaterListener:
+        tags:
+            - { name: 'doctrine.event_listener', event: prePersist }
+            - { name: 'doctrine.event_listener', event: preUpdate }
+
+    User\Infrastructure\Request\RegisterUserRequest:
+        arguments:
+            - '@request_stack'
+
+    User\Infrastructure\Controller\RegisterUserAction:
+        arguments:
+            - '@command_bus'
+            - '@User\Infrastructure\DBAL\DoctrineDbalUserQuery'
+        tags:
+            - { name: controller.service_arguments }
+        public: true
+
+imports:
+    - { resource: "fixtures.yaml"}
+    - { resource: "commands.yaml"}

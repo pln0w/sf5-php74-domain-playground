@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+  <entity
+      name="User\Domain\Model\User"
+      table="users"
+      repository-class="User\Infrastructure\Repository\DoctrineOrmUserRepository">
+
+    <indexes>
+      <index name="username_idx" columns="username"/>
+      <index name="email_idx" columns="email"/>
+    </indexes>
+
+    <unique-constraints>
+      <unique-constraint columns="username" name="user_uniq_username" />
+      <unique-constraint columns="email" name="user_uniq_email" />
+    </unique-constraints>
+
+    <id name="id" type="integer" column="id">
+      <generator strategy="AUTO"/>
+    </id>
+
+    <field name="username" column="username" unique="true" />
+    <field name="email" column="email" unique="true" />
+    <field name="salt" column="salt" />
+    <field name="password" column="password" />
+    <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
+    <field name="emailVerificationToken" column="email_verification_token" nullable="true" />
+    <field name="passwordResetToken" column="password_reset_token" nullable="true" />
+    <field name="passwordRequestedAt" column="password_requested_at" type="datetime" nullable="true" />
+    <field name="verifiedAt" column="verified_at" type="datetime" nullable="true" />
+    <field name="locked" column="locked" type="boolean" />
+    <field name="expiresAt" column="expires_at" type="datetime" nullable="true" />
+    <field name="credentialsExpireAt" column="credentials_expire_at" type="datetime" nullable="true" />
+    <field name="createdAt" column="created_at" type="datetime" />
+    <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
+
+  </entity>
+
+</doctrine-mapping>
