@@ -28,9 +28,6 @@ final class RegisterUserAction
             new CreateUserCommand($request->getEmail(), $request->getUsername(), $request->getPassword())
         );
 
-        return ApiResponse::json(
-            $this->userQuery->findByEmail($request->getEmail()),
-            JsonResponse::HTTP_CREATED
-        );
+        return ApiResponse::json($this->userQuery->findByEmail($request->getEmail()), JsonResponse::HTTP_CREATED);
     }
 }

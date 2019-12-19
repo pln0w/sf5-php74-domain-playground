@@ -6,6 +6,7 @@ services:
         autoconfigure: true
         public: false
 
+    # modules
     Shared\:
         resource: '../src/Shared/*'
         exclude: '../src/Shared/{SymfonyKernel.php}'
@@ -13,21 +14,34 @@ services:
     User\:
         resource: '../src/User/*'
 
+#    User\Application\Security\UserProvider: ~
+
+    User\Infrastructure\Repository\DoctrineOrmUserRepository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - User\Domain\Model\User
+
+
+    # REST API validator
     Pawly\RestApiValidator\Resolver\CustomRequestResolver:
         arguments:
             - '@validator'
         tags:
             - { name: controller.request_value_resolver }
 
+    # Password update listener
     User\Application\EventListener\PasswordUpdaterListener:
         tags:
             - { name: 'doctrine.event_listener', event: prePersist }
             - { name: 'doctrine.event_listener', event: preUpdate }
 
+    # requests
     User\Infrastructure\Request\RegisterUserRequest:
         arguments:
             - '@request_stack'
 
+    # controllers
     User\Infrastructure\Controller\RegisterUserAction:
         arguments:
             - '@command_bus'

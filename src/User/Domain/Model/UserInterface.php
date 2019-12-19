@@ -8,11 +8,13 @@ use DateTimeInterface;
 use Serializable;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
 
 interface UserInterface extends
     Serializable,
-    EncoderAwareInterface,
-    CredentialsHolderInterface
+    CoreUserInterface,
+    EncoderAwareInterface
+//    CredentialsHolderInterface
 {
     public const DEFAULT_ROLE = 'ROLE_USER';
 

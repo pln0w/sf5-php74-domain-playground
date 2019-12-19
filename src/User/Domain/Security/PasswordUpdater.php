@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace User\Domain\Security;
 
-use User\Domain\Model\CredentialsHolderInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use User\Domain\Model\UserInterface;
 
 final class PasswordUpdater implements PasswordUpdaterInterface
 {
@@ -15,10 +16,15 @@ final class PasswordUpdater implements PasswordUpdaterInterface
         $this->userPasswordEncoder = $passwordEncoder;
     }
 
-    public function updatePassword(CredentialsHolderInterface $user): void
+    public function updatePassword(UserInterface $user): void
     {
-        if ('' !== $user->getPlainPassword()) {
-            $user->setPassword($this->userPasswordEncoder->encode($user));
+        if ('' !== $user->getPlainPassword() && null !== $user->getPlainPassword()) {
+            $user->setPassword(
+                $this->userPasswordEncoder->encodePassword(
+                    $user,
+                    $user->getPlainPassword(),
+                )
+            );
             $user->eraseCredentials();
         }
     }
